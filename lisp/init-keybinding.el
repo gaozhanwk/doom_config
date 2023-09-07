@@ -1,6 +1,7 @@
 ;;; lisp/init-keybinding.el -*- lexical-binding: t; -*-
 
 ;; 快速打开ssh 文件
+;;; Code:
 (defun open-ssh-112()
   (interactive)
   (find-file "/ssh:gaoz@192.168.0.112:/home/gaoz/"))
@@ -12,5 +13,6 @@
 ;;replace swiper
 (global-set-key (kbd "C-s") 'consult-line)
 ;;consult-imenu
+
 
 (provide 'init-keybinding)
