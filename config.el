@@ -69,29 +69,8 @@
 ;; To get information about any of these functions/macros, move the cursor over
 ;; the highlighted symbol at press 'K' (non-evil users must press 'C-c c k').
 ;; This will open documentation for it, including demos of how they are used.
-;; Alternatively, use `C-h o' tbo look up a symbol (functions, variables, faces,
+;; Alternatively, use `C-h o' to look up a symbol (functions, variables, faces,
 ;; etc).
 ;;
 ;; You can also try 'gd' (or 'C-c c d') to jump to their definition and see how
-
-;; 自动加载外部修改过的文件
-(global-auto-revert-mode 1)
-;; 自动保存文件
-(setq auto-save-default t)
-;; 关闭 Emacs 中的警告音
-(setq ring-bell-function 'ignore)
-;; 简化yes no
-(fset 'yes-or-no-p 'y-or-n-p)
-;; 默认开启emacs
-;;(setq evil-default-state 'emacs)
-; they are implemented.
-
-(add-to-list 'load-path "~/.doom.d/lisp/")
-
-;;; Package Management
-;; -----------------------------------------------------------------------------
-(use-package init-ui)
-(use-package init-packages)
-(use-package init-org)
-(use-package init-keybinding)
-
+;; they are implemented.
