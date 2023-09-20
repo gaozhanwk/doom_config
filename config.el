@@ -91,7 +91,7 @@
 ;;; Package Management
 ;; -----------------------------------------------------------------------------
 (use-package init-ui)
-(use-package init-packages)
+(use-package init-edit)
 (use-package init-org)
 (use-package init-keybinding)
 

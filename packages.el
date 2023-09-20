@@ -48,3 +48,9 @@
 ;(unpin! pinned-package another-pinned-package)
 ;; ...Or *all* packages (NOT RECOMMENDED; will likely break things)
 ;(unpin! t)
+(package! counsel)
+(package! bind-key)
+(package! org-bullets)
+
+;;多光标
+(package! multiple-cursors :disable t)
