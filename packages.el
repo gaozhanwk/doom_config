@@ -52,5 +52,5 @@
 (package! bind-key)
 (package! org-bullets)
 
-;;多光标
-(package! multiple-cursors :disable t)
+(package! rime)
+(package! treemacs-icons-dired :disable t)

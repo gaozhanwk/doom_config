@@ -73,7 +73,7 @@
 ;; etc).
 ;;
 ;; You can also try 'gd' (or 'C-c c d') to jump to their definition and see how
-
+(setq doom-font (font-spec :family "Source Code Pro" :size 15))
 ;; 自动加载外部修改过的文件
 (global-auto-revert-mode 1)
 ;; 自动保存文件

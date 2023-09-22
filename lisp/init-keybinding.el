@@ -2,10 +2,10 @@
 
 ;; 快速打开ssh 文件
 ;;; Code:
-(defun open-ssh-112()
-  (interactive)
-  (find-file "/ssh:gaoz@192.168.0.112:/home/gaoz/"))
-(global-set-key (kbd "<f5>") 'open-ssh-112)
+;;(defun open-ssh-112()
+;;  (interactive)
+;;  (find-file "/ssh:gaoz@192.168.0.112:/home/gaoz/"))
+;;(global-set-key (kbd "<f5>") 'open-ssh-112)
 ;;(keymap-global-set "<f5>" 'open-ssh-112)
 
 ;;
