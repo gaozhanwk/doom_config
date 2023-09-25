@@ -12,6 +12,8 @@
 ;;(package-install 'consult)
 ;;replace swiper
 (global-set-key (kbd "C-s") 'consult-line)
+(global-set-key (kbd "C-c f r") 'consult-ripgrep)
+(global-set-key (kbd "C-c f f") 'consult-find)
 ;;consult-imenu
 
 

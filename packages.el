@@ -54,3 +54,7 @@
 
 (package! rime)
 (package! treemacs-icons-dired :disable t)
+(package! denote)
+(package! undo-tree)
+(package! all-the-icons-dired)
+(package! all-the-icons-completion)

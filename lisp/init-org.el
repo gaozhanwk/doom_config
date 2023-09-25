@@ -43,6 +43,42 @@
 
 (global-set-key (kbd "<f12>") 'my-yank-image-from-win-clipboard-through-powershell)
 
+;; wsl调用window浏览器
+(defun my/browse-url-generic (url &optional _new-window)
+  ;; new-window ignored
+  "Ask the WWW browser defined by `browse-url-generic-program' to load URL.
+Default to the URL around or before point.  A fresh copy of the
+browser is started up in a new process with possible additional arguments
+`browse-url-generic-args'.  This is appropriate for browsers which
+don't offer a form of remote control."
+  (interactive (browse-url-interactive-arg "URL: "))
+  (if (not browse-url-generic-program)
+      (error "No browser defined (`browse-url-generic-program')"))
+  (apply 'call-process browse-url-generic-program nil
+	 0 nil
+	 (append browse-url-generic-args
+                 (list (format "start %s"
+                               (replace-regexp-in-string "&" "^&" url))))))
+
+(when (and (eq system-type 'gnu/linux)
+           (string-match
+            "Linux.*Microsoft.*Linux"
+            (shell-command-to-string "uname -a")))
+  (setq
+   browse-url-generic-program  "/mnt/c/Windows/System32/cmd.exe"
+   browse-url-generic-args     '("/c")
+   browse-url-browser-function #'my/browse-url-generic))
+
+
+;; dnote
+(use-package! denote
+  :hook (dired-mode . denote-dired-mode)
+  :bind (("C-c d n" . denote)
+         ("C-c d f" . denote-open-or-create))
+  :config
+  (setq denote-directory (expand-file-name "~/org/"))
+  (setq denote-known-keywords '("emacs" "android" "reading" "studying")))
+
 (provide 'init-org)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
