@@ -19,8 +19,8 @@
   (org-level-8 ((t (:height 1.0 :weight bold))))
   (org-level-9 ((t (:height 1.0 :weight bold))))
   ;; 设置代码块用上下边线包裹
-  (org-block-begin-line ((t (:underline t :background unspecified))))
-  (org-block-end-line ((t (:overline t :underline nil :background unspecified))))
+  ;;(org-block-begin-line ((t (:underline t :background unspecified))))
+  ;;(org-block-end-line ((t (:overline t :underline nil :background unspecified))))
   )
 
 (use-package! org-bullets

@@ -87,6 +87,9 @@
 ; they are implemented.
 
 (add-to-list 'load-path "~/.doom.d/lisp/")
+;;(add-to-list 'load-path "~/lsp-bridge")
+;;(require 'lsp-bridge)
+;;(global-lsp-bridge-mode)
 
 ;;; Package Management
 ;; -----------------------------------------------------------------------------
@@ -94,4 +97,3 @@
 (use-package init-edit)
 (use-package init-org)
 (use-package init-keybinding)
-

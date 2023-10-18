@@ -58,3 +58,5 @@
 (package! undo-tree)
 (package! all-the-icons-dired)
 (package! all-the-icons-completion)
+(package! htmlize)
+(package! plantuml-mode :disable t)
