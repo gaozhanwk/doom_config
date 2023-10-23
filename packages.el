@@ -59,4 +59,7 @@
 (package! all-the-icons-dired)
 (package! all-the-icons-completion)
 (package! htmlize)
-(package! plantuml-mode :disable t)
+
+(package! nyan-mode :recipe (:host github :repo "TeMPOraL/nyan-mode"))
+
+(package! counsel-tramp :disable t)

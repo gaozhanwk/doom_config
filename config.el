@@ -73,7 +73,19 @@
 ;; etc).
 ;;
 ;; You can also try 'gd' (or 'C-c c d') to jump to their definition and see how
-(setq doom-font (font-spec :family "Source Code Pro" :size 15))
+
+(setq doom-font (font-spec :family "Source Code Pro" :size 15)
+      doom-big-font (font-spec :family "Source Code Pro" :size 30)
+      doom-variable-pitch-font (font-spec :family "Source Code Variable" :size 15)
+      doom-unicode-font (font-spec :family "JuliaMono")
+      doom-serif-font (font-spec :family "TeX Gyre Cursor")
+      )
+
+
+(if (display-graphic-p)
+    (dolist (charset '(kana han cjk-misc bopomofo))
+      (set-fontset-font (frame-parameter nil 'font)
+                        charset (font-spec :family "SimSun" :size 16))))
 ;; 自动加载外部修改过的文件
 (global-auto-revert-mode 1)
 ;; 自动保存文件
