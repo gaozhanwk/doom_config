@@ -74,18 +74,13 @@
 ;;
 ;; You can also try 'gd' (or 'C-c c d') to jump to their definition and see how
 
-(setq doom-font (font-spec :family "Source Code Pro" :size 15)
-      doom-big-font (font-spec :family "Source Code Pro" :size 30)
-      doom-variable-pitch-font (font-spec :family "Source Code Variable" :size 15)
-      doom-unicode-font (font-spec :family "JuliaMono")
-      doom-serif-font (font-spec :family "TeX Gyre Cursor")
-      )
+(setq doom-font (font-spec :family "Source Code Pro" :size 15))
 
+;;
+(require 'cnfonts)
+;; 让 cnfonts 在 Emacs 启动时自动生效。
+(cnfonts-mode 1)
 
-(if (display-graphic-p)
-    (dolist (charset '(kana han cjk-misc bopomofo))
-      (set-fontset-font (frame-parameter nil 'font)
-                        charset (font-spec :family "SimSun" :size 16))))
 ;; 自动加载外部修改过的文件
 (global-auto-revert-mode 1)
 ;; 自动保存文件
@@ -98,14 +93,23 @@
 ;;(setq evil-default-state 'emacs)
 ; they are implemented.
 
-(add-to-list 'load-path "~/.doom.d/lisp/")
+;;; tramp远程环境
+;;(add-to-list 'tramp-remote-path "~/.local/bin")
+;;(add-to-list 'tramp-remote-path 'tramp-own-remote-path)
+
+;;; lsp-bridge目前调试有问题，以后再折腾
 ;;(add-to-list 'load-path "~/lsp-bridge")
 ;;(require 'lsp-bridge)
 ;;(global-lsp-bridge-mode)
 
+(add-to-list 'load-path "~/.doom.d/lisp/")
 ;;; Package Management
 ;; -----------------------------------------------------------------------------
 (use-package init-ui)
 (use-package init-edit)
 (use-package init-org)
 (use-package init-keybinding)
+(use-package sdcv)
+(use-package company-english-helper)
+;;(use-package insert-translated-name)
+;;(setq insert-translated-name-program "ollama")

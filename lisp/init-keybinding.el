@@ -12,8 +12,11 @@
 ;;(package-install 'consult)
 ;;replace swiper
 (global-set-key (kbd "C-s") 'consult-line)
-(global-set-key (kbd "C-c f r") 'consult-ripgrep)
-(global-set-key (kbd "C-c f f") 'consult-find)
+(global-set-key (kbd "C-c f r") 'counsel-rg)
+(global-set-key (kbd "C-c f f") 'fd-dired)
+(global-set-key (kbd "<f5>") 'toggle-company-english-helper)
+(global-set-key (kbd "C-c C-s") 'sdcv-search-pointer+)
+;;(global-set-key (kbd "C-c f f") 'consult-find)
 ;;consult-imenu
 
 

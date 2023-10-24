@@ -53,6 +53,7 @@
 (package! org-bullets)
 
 (package! rime)
+(package! posframe)
 (package! treemacs-icons-dired :disable t)
 (package! denote)
 (package! undo-tree)
@@ -63,3 +64,8 @@
 (package! nyan-mode :recipe (:host github :repo "TeMPOraL/nyan-mode"))
 
 (package! counsel-tramp :disable t)
+
+;; 添加可变间距字体化使手册页更好看
+(package! info-colors :pin "2e237c301ba62f0e0286a27c1abe48c4c8441143" :disable t)
+(package! org-super-agenda :pin "f4f528985397c833c870967884b013cf91a1da4a")
+(package! cnfonts)

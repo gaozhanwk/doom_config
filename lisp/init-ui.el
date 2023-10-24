@@ -8,6 +8,10 @@
 (use-package! all-the-icons-dired
   :hook (dired-mode . all-the-icons-dired-mode)
   )
+(use-package! all-the-icons-completion
+  :hook ((after-init . all-the-icons-completion-mode)
+         (marginalia-mode . all-the-icons-completion-marginalia-setup))
+  )
 
 (setq doom-theme (let ((themes '(doom-vibrant
                                  doom-fairy-floss
@@ -22,10 +26,10 @@
 (use-package! nyan-mode
   :config
   (setq nyan-animate-nyancat t
-	nyan-wavy-trail t
-	nyan-cat-face-number 4
-	nyan-bar-length 16
-	nyan-minimum-window-width 64)
+        nyan-wavy-trail t
+        nyan-cat-face-number 4
+        nyan-bar-length 16
+        nyan-minimum-window-width 64)
   (add-hook! 'doom-modeline-hook #'nyan-mode))
 
 
@@ -41,10 +45,5 @@
          (let ((project-name (projectile-project-name)))
            (unless (string= "-" project-name)
              (format "  -  [%s]" project-name))))))
-
-;;(use-package! all-the-icons-completion
-;  :hook ((after-init . all-the-icons-completion-mode)
-;         (marginalia-mode . all-the-icons-completion-marginalia-setup))
-;;  )
 
 (provide 'init-ui)
