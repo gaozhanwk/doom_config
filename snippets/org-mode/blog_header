@@ -1,0 +1,22 @@
+# -*- mode: snippet -*-
+# name: blog header
+# key: blogheader
+# condition: t
+# --
+#+hugo_categories: ${1:`(file-name-nondirectory (directory-file-name (file-name-directory (buffer-file-name))))`}
+#+hugo_tags: $2
+#+hugo_draft: true
+#+hugo_locale: zh
+#+hugo_lastmod: $4
+#+hugo_auto_set_lastmod: nil
+#+hugo_front_matter_key_replace: author>authors
+#+title: ${3:`(mapconcat #'capitalize (split-string (file-name-base (buffer-file-name)) "[-_]+") " ")`}
+#+author: `user-full-name`
+#+date: ${4:`(format-time-string "%Y-%m-%dT%H:%M:%S%:z" (current-time))`}
+#+email: `user-mail-address`
+#+description: GinShio | $5
+#+keywords: $1 $2
+#+export_file_name: `(file-name-sans-extension (file-name-nondirectory (buffer-file-name)))`.zh-cn.txt
+
+
+$0

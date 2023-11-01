@@ -1,0 +1,17 @@
+# -*- mode: snippet -*-
+# name: microsoftoffice
+# key: mso
+# expand-env: ((yas-indent-line nil))
+# --
+######################### MicrosoftOffice #########################
+*.doc    filter=lfs diff=lfs merge=lfs -text
+*.dot    filter=lfs diff=lfs merge=lfs -text
+*.docx   filter=lfs diff=lfs merge=lfs -text
+*.dotx   filter=lfs diff=lfs merge=lfs -text
+*.xls    filter=lfs diff=lfs merge=lfs -text
+*.xlt    filter=lfs diff=lfs merge=lfs -text
+*.xlsx   filter=lfs diff=lfs merge=lfs -text
+*.ppt    filter=lfs diff=lfs merge=lfs -text
+*.pot    filter=lfs diff=lfs merge=lfs -text
+*.pptx   filter=lfs diff=lfs merge=lfs -text
+*.potx   filter=lfs diff=lfs merge=lfs -text

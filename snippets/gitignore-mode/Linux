@@ -1,0 +1,21 @@
+# -*- mode: snippet -*-
+# name: linux
+# key: linux
+# expand-env: ((yas-indent-line nil))
+# --
+######################### Linux #########################
+# repo: github/gitignore; pin: 4f7062e132; file: Global/Linux.gitignore
+# LICENSE: Creative Commons Zero v1.0 Universal
+*~
+
+# temporary files which can be created if a process still has a handle open of a deleted file
+.fuse_hidden*
+
+# KDE directory preferences
+.directory
+
+# Linux trash folder which might appear on any partition or disk
+.Trash-*
+
+# .nfs files are created when an open file is removed but is still being accessed
+.nfs*

@@ -1,0 +1,25 @@
+# -*- mode: snippet -*-
+# name: erlang
+# key: erlang
+# expand-env: ((yas-indent-line nil))
+# --
+######################### Erlang #########################
+# repo: github/gitignore; pin: 0d7600fc30; file: Erlang.gitignore
+# LICENSE: Creative Commons Zero v1.0 Universal
+.eunit
+*.o
+*.beam
+*.plt
+erl_crash.dump
+.concrete/DEV_MODE
+
+# rebar 2.x
+.rebar
+rel/example_project
+ebin/*.beam
+deps
+
+# rebar 3
+.rebar3
+_build/
+_checkouts/

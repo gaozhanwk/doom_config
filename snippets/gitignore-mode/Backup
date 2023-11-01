@@ -1,0 +1,13 @@
+# -*- mode: snippet -*-
+# name: backup
+# key: backup
+# expand-env: ((yas-indent-line nil))
+# --
+######################### Backup #########################
+# repo: github/gitignore; pin: 5f9c70b4bf; file: Global/Backup.gitignore
+# LICENSE: Creative Commons Zero v1.0 Universal
+*.bak
+*.gho
+*.ori
+*.orig
+*.tmp

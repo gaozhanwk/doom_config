@@ -1,0 +1,19 @@
+# -*- mode: snippet -*-
+# name: cmake
+# key: cmake
+# expand-env: ((yas-indent-line nil))
+# --
+######################### CMake #########################
+# repo: github/gitignore; pin: f273474b97; file: CMake.gitignore
+# LICENSE: Creative Commons Zero v1.0 Universal
+CMakeLists.txt.user
+CMakeCache.txt
+CMakeFiles
+CMakeScripts
+Testing
+Makefile
+cmake_install.cmake
+install_manifest.txt
+compile_commands.json
+CTestTestfile.cmake
+_deps

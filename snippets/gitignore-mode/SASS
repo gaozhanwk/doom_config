@@ -1,0 +1,12 @@
+# -*- mode: snippet -*-
+# name: sass
+# key: sass
+# expand-env: ((yas-indent-line nil))
+# --
+######################### SASS #########################
+# repo: github/gitignore; pin: 560f235f1f; file: SASS.gitignore
+# LICENSE: Creative Commons Zero v1.0 Universal
+.sass-cache/
+*.css.map
+*.sass.map
+*.scss.map

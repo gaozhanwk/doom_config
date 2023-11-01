@@ -1,0 +1,69 @@
+* Doom Private
+
+** Dependens
+*** Fonts
+  - normal :: [[https://adobe-fonts.github.io/source-code-pro/][Source Code Pro]]
+  - variable :: [[https://adobe-fonts.github.io/source-code-pro/][Source Code Variable]]
+  - unicode :: [[https://juliamono.netlify.app][JuliaMono]]
+  - serif :: [[https://ctan.org/pkg/tex-gyre-cursor][TeX Gyre Cursor]]
+
+*** Tools
+  + base
+    - [[https://github.com/BurntSushi/ripgrep][ripgrep]]
+  + terminal
+    - make
+    - cmake
+    - libvterm (~USE_SYSTEM_LIBVTERM=yes~)
+    - libtool-bin
+  # + org-roam
+  #   - graphviz
+  + ebook management
+    - calibre
+    - sqlite3
+  + git
+    - [[https://github.com/dandavison/delta][git-delta]]
+  + spell check
+    - [[https://hunspell.github.io/][hunspell]] or [[http://aspell.net/][GNU Aspell]]
+    - [[http://app.aspell.net/create][SCOWL Custom List / Dicionary Creator]]
+  + screenshot
+    - [[https://imagemagick.org/index.php][ImageMagick]]
+  + theme magic (*Only* Unix-like system)
+    - [[https://github.com/dylanaraps/pywal][pywal]]
+  + selectric (*Maybe Only* Unix-like system)
+    - [[https://alsa-project.org/wiki/Main_Page][alsa]]
+  + wakatime (use wakatime config file ~$HOME/.wakatime.cfg~)
+    - [[https://github.com/wakatime/wakatime-cli][wakatime-cli]]
+
+*** LSP
+  + CC :: [[https://github.com/MaskRay/ccls][ccls]] or [[https://clangd.llvm.org/][clangd]]
+  + JavaScript / TypeScript :: [[https://deno.land/][deno]] or [[https://www.npmjs.com/package/typescript-language-server][typescript-language-server]]
+  + Python :: [[https://github.com/microsoft/pyright][pyright]]
+
+Or More...
+
+** Directory
+  + *base* org :: =~/org=
+  + *roam* :: =base/roam=
+  + *agenda* :: =base/agenda=
+  + *capture* :: =base/capture=
+
+** Installation
+#+begin_src shell
+git clone --depth 1 git@github.com:hlissner/doom-emacs ~/.emacs.d
+git clone git@github.com:GinShio/doom-private ~/.doom.d
+emacs --batch --eval "(progn (require 'org) (setq org-confirm-babel-evaluate nil) (org-babel-tangle-file \"~/.doom.d/config.org\"))"
+~/.emacs.d/bin/doom install
+emacs --batch --eval "(progn (require 'daq-gdb-lldb) (dap-gdb-lldb-setup))"
+#+end_src
+
+** Issues
+ + Cannot download emojis images
+
+   well, download emojis manually! you can find emoji sets in [[https://github.com/iqbalansari/emacs-emojify/blob/master/data/emoji-sets.json][here]], and
+   extract the file to =~/.emacs.d/.local/cache/emojis=. example:
+   #+begin_src shell
+emoji="twemoji-v2"
+emoji_url="https://raw.githubusercontent.com/iqbalansari/emacs-emojify/9e36d0e8c2a9c373a39728f837a507adfbb7b931/twemoji-fixed-v2.tar"
+target=~/.emacs.d/.local/cache/emojis/
+cd /tmp/ && wget ${emoji_url} -O ${emoji}.tar && mkdir -p ${target} && tar -xvf ${emoji}.tar -C ${target}
+   #+end_src

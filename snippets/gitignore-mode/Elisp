@@ -1,0 +1,19 @@
+# -*- mode: snippet -*-
+# name: elisp
+# key: elisp
+# expand-env: ((yas-indent-line nil))
+# --
+######################### Elisp #########################
+# repo: github/gitignore; pin: 95a405c3ef; file: Elisp.gitignore
+# LICENSE: Creative Commons Zero v1.0 Universal
+# Compiled
+*.elc
+
+# Packaging
+.cask
+
+# Backup files
+*~
+
+# Undo-tree save-files
+*.~undo-tree

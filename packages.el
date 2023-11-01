@@ -1,51 +1,50 @@
 ;; -*- no-byte-compile: t; -*-
 ;;; $DOOMDIR/packages.el
 
-;; To install a package with Doom you must declare them here and run 'doom sync'
-;; on the command line, then restart Emacs for the changes to take effect -- or
-;; use 'M-x doom/reload'.
+;; [[file:config.org::*String Inflection][String Inflection:1]]
+(package! string-inflection)
+;; String Inflection:1 ends here
 
+;; [[file:config.org::*iedit][iedit:1]]
+(package! iedit :recipe (:host github :repo "victorhge/iedit"))
+;; iedit:1 ends here
 
-;; To install SOME-PACKAGE from MELPA, ELPA or emacsmirror:
-;(package! some-package)
+;; [[file:config.org::*hungry delete][hungry delete:1]]
+(package! hungry-delete :recipe (:host github :repo "nflath/hungry-delete"))
+;; hungry delete:1 ends here
 
-;; To install a package directly from a remote git repo, you must specify a
-;; `:recipe'. You'll find documentation on what `:recipe' accepts here:
-;; https://github.com/radian-software/straight.el#the-recipe-format
-;(package! another-package
-;  :recipe (:host github :repo "username/repo"))
+(package! magit-delta :recipe (:host github :repo "dandavison/magit-delta"))
 
-;; If the package you are trying to install does not contain a PACKAGENAME.el
-;; file, or is located in a subdirectory of the repo, you'll need to specify
-;; `:files' in the `:recipe':
-;(package! this-package
-;  :recipe (:host github :repo "username/repo"
-;           :files ("some-file.el" "src/lisp/*.el")))
+;; [[file:config.org::*Screenshot][Screenshot:1]]
+(package! screenshot
+  :recipe (:host github :repo "tecosaur/screenshot" :build (:not compile))
+  )
+;; Screenshot:1 ends here
 
-;; If you'd like to disable a package included with Doom, you can do so here
-;; with the `:disable' property:
-;(package! builtin-package :disable t)
+;; [[file:config.org::*Ebooks][Ebooks:1]]
+(package! calibredb)
+;; Ebooks:1 ends here
 
-;; You can override the recipe of a built in package without having to specify
-;; all the properties for `:recipe'. These will inherit the rest of its recipe
-;; from Doom or MELPA/ELPA/Emacsmirror:
-;(package! builtin-package :recipe (:nonrecursive t))
-;(package! builtin-package-2 :recipe (:repo "myfork/package"))
+;; [[file:config.org::*Nyan][Nyan:1]]
+(package! nyan-mode :recipe (:host github :repo "TeMPOraL/nyan-mode"))
+;; Nyan:1 ends here
 
-;; Specify a `:branch' to install a package from a particular branch or tag.
-;; This is required for some packages whose default branch isn't 'master' (which
-;; our package manager can't deal with; see radian-software/straight.el#279)
-;(package! builtin-package :recipe (:branch "develop"))
+;; [[file:config.org::*Theme Magic][Theme Magic:1]]
+(package! theme-magic)
+;; Theme Magic:1 ends here
 
-;; Use `:pin' to specify a particular commit to install.
-;(package! builtin-package :pin "1a2b3c4d5e")
+;; [[file:config.org::*xkcd][xkcd:1]]
+(package! xkcd)
+;; xkcd:1 ends here
 
+(package! org-pandoc-import :recipe
+  (:host github :repo "tecosaur/org-pandoc-import" :files ("*.el" "filters" "preprocessors")))
 
-;; Doom's packages are pinned to a specific commit and updated from release to
-;; release. The `unpin!' macro allows you to unpin single packages...
-;(unpin! pinned-package)
-;; ...or multiple packages
-;(unpin! pinned-package another-pinned-package)
-;; ...Or *all* packages (NOT RECOMMENDED; will likely break things)
-;(unpin! t)
-(package! window-numbering)
+(package! org-ol-tree :recipe (:host github :repo "Townk/org-ol-tree"))
+
+(package! org-modern)
+
+(package! org-appear
+  :recipe (:host github :repo "awth13/org-appear"))
+
+(package! org-fragtog)

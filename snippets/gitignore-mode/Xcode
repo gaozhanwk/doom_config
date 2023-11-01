@@ -1,0 +1,16 @@
+# -*- mode: snippet -*-
+# name: xcode
+# key: xcode
+# expand-env: ((yas-indent-line nil))
+# --
+######################### Xcode #########################
+# repo: github/gitignore; pin: 752b7678db; file: Global/Xcode.gitignore
+# LICENSE: Creative Commons Zero v1.0 Universal
+# gitignore contributors: remember to update Global/Xcode.gitignore, Objective-C.gitignore & Swift.gitignore
+
+## User settings
+xcuserdata/
+
+## Xcode 8 and earlier
+*.xcscmblueprint
+*.xccheckout

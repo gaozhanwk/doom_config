@@ -1,0 +1,16 @@
+# -*- mode: snippet -*-
+# name: fonts
+# key: fonts
+# expand-env: ((yas-indent-line nil))
+# --
+######################### Fonts #########################
+*.ttf     filter=lfs diff=lfs merge=lfs -text
+*.tte     filter=lfs diff=lfs merge=lfs -text
+*.ttc     filter=lfs diff=lfs merge=lfs -text
+*.otf     filter=lfs diff=lfs merge=lfs -text
+*.otc     filter=lfs diff=lfs merge=lfs -text
+*.woff    filter=lfs diff=lfs merge=lfs -text
+*.woff2   filter=lfs diff=lfs merge=lfs -text
+*.afm     filter=lfs diff=lfs merge=lfs -text
+*.pfm     filter=lfs diff=lfs merge=lfs -text
+*.pfb     filter=lfs diff=lfs merge=lfs -text

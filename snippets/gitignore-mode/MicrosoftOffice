@@ -1,0 +1,27 @@
+# -*- mode: snippet -*-
+# name: microsoftoffice
+# key: mso
+# expand-env: ((yas-indent-line nil))
+# --
+######################### MicrosoftOffice #########################
+# repo: github/gitignore; pin: cbdbe97c96; file: Global/MicrosoftOffice.gitignore
+# LICENSE: Creative Commons Zero v1.0 Universal
+*.tmp
+
+# Word temporary
+~$*.doc*
+
+# Word Auto Backup File
+Backup of *.doc*
+
+# Excel temporary
+~$*.xls*
+
+# Excel Backup File
+*.xlk
+
+# PowerPoint temporary
+~$*.ppt*
+
+# Visio autosave temporary files
+*.~vsd*

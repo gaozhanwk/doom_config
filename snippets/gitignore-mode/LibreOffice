@@ -1,0 +1,10 @@
+# -*- mode: snippet -*-
+# name: libreoffice
+# key: lo
+# expand-env: ((yas-indent-line nil))
+# --
+######################### LibreOffice #########################
+# repo: github/gitignore; pin: 0b421ba8db; file: Global/LibreOffice.gitignore
+# LICENSE: Creative Commons Zero v1.0 Universal
+# LibreOffice locks
+.~lock.*#
