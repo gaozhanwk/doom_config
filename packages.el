@@ -65,7 +65,19 @@
 
 (package! counsel-tramp :disable t)
 
-;; 添加可变间距字体化使手册页更好看
-(package! info-colors :pin "2e237c301ba62f0e0286a27c1abe48c4c8441143" :disable t)
-(package! org-super-agenda :pin "f4f528985397c833c870967884b013cf91a1da4a")
 (package! cnfonts)
+
+;; 翻译插件
+(package! sdcv
+  :recipe (:host github :repo "manateelazycat/sdcv"))
+(package! company-english-helper
+  :recipe (:host github :repo "manateelazycat/company-english-helper"))
+
+(package! manateelazycat
+  :recipe (:host github :repo "manateelazycat/lsp-bridge" :build (:not compile))
+  )
+
+(package! lsp-mode)
+(package! company)
+
+(package! winum)

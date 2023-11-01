@@ -5,22 +5,15 @@
 ;;(add-hook! 'window-setup-hook #'toggle-frame-maximized)
 (display-time-mode t)   ;开启时间状态栏
 
+(require 'winum)
+(winum-mode t)
+
 (use-package! all-the-icons-dired
-  :hook (dired-mode . all-the-icons-dired-mode)
-  )
+  :hook (dired-mode . all-the-icons-dired-mode))
+
 (use-package! all-the-icons-completion
   :hook ((after-init . all-the-icons-completion-mode)
-         (marginalia-mode . all-the-icons-completion-marginalia-setup))
-  )
-
-(setq doom-theme (let ((themes '(doom-vibrant
-                                 doom-fairy-floss
-                                 doom-dracula
-                                 doom-Iosvkem
-                                 doom-moonlight
-                                 doom-monokai-pro
-                                 doom-tokyo-night)))
-                   (elt themes (random (length themes)))))
+         (marginalia-mode . all-the-icons-completion-marginalia-setup)))
 
 ;; 彩虹猫 UI
 (use-package! nyan-mode

@@ -99,8 +99,12 @@
 
 ;;; lsp-bridge目前调试有问题，以后再折腾
 ;;(add-to-list 'load-path "~/lsp-bridge")
-;;(require 'lsp-bridge)
-;;(global-lsp-bridge-mode)
+;(require 'yasnippet)
+;(yas-global-mode 1)
+;(require 'lsp-bridge)
+;(global-lsp-bridge-mode)
+
+(require 'company-english-helper)
 
 (add-to-list 'load-path "~/.doom.d/lisp/")
 ;;; Package Management
@@ -109,7 +113,4 @@
 (use-package init-edit)
 (use-package init-org)
 (use-package init-keybinding)
-(use-package sdcv)
-(use-package company-english-helper)
-;;(use-package insert-translated-name)
 ;;(setq insert-translated-name-program "ollama")

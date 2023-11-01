@@ -15,7 +15,7 @@
 (global-set-key (kbd "C-c f r") 'counsel-rg)
 (global-set-key (kbd "C-c f f") 'fd-dired)
 (global-set-key (kbd "<f5>") 'toggle-company-english-helper)
-(global-set-key (kbd "C-c C-s") 'sdcv-search-pointer+)
+(global-set-key (kbd "C-c s") 'sdcv-search-pointer+)
 ;;(global-set-key (kbd "C-c f f") 'consult-find)
 ;;consult-imenu
 
