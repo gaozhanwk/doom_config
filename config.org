@@ -1,8 +1,5 @@
-# SPDX-FileCopyrightText:
-# SPDX-License-Identifier: MIT
 # Title: Doom Emacs 配置文件
 #+title: Doom Emacs Configuration
-# Subtitle: 疯狂的方法、管理与动物园 --- 细致入微
 #+subtitle: The Methods, Management, and Menagerie@@latex:\\@@ of Madness@@latex: --- in meticulous detail@@
 #+date: @@html:<!--@@{{{git-rev}}}@@html:-->@@@@latex:\\\Large\bfseries@@ {{{modification-time(%Y-%m-%d, t)}}} @@latex:\\\normalsize\mdseries@@{{{modification-time(%H:%M, t)}}} @@latex:\acr{\lowercase{@@{{{timezone}}}@@latex:}}\iffalse@@, {{{git-rev}}}@@latex:\fi@@
 #+macro: timezone (eval (substring (shell-command-to-string "date +%Z") 0 -1))
@@ -104,10 +101,9 @@ source /etc/os-release
 
 配置有用且基础的个人信息
 #+begin_src emacs-lisp
-(setq user-full-name "GinShio"
-      user-mail-address "ginshio78@gmail.com"
-      user-gpg-key "9E2949D214995C7E"
-      org-directory "~/cyberlive"
+(setq user-full-name "gaozhan"
+      user-mail-address "gaozhan@seirobotics.net"
+      org-directory "~/org"
       )
 #+end_src
 显然这可以被 GPG 或其他程序使用。
@@ -115,6 +111,8 @@ source /etc/os-release
 ** 设置默认值
 尝试一下别人的默认值，比如 [[https://github.com/angrybacon/dotemacs/blob/master/dotemacs.org#use-better-defaults][angrybacon/dotemacs]]
 #+begin_src emacs-lisp
+(add-hook! 'window-setup-hook #'toggle-frame-fullscreen)
+(display-time-mode t)   ;开启时间状态栏
 
 (define-key! global-map "C-s" #'+default/search-buffer)
 (map! (:leader (:desc "load a saved workspace" :g "wr" #'+workspace/load))) ;; workspace load keybind
@@ -177,9 +175,9 @@ source /etc/os-release
 ** Doom 配置
 拉取 doom-emacs 仓库的分支
   - emacs-version: *28.1*
-  - git commit: *c44bc81a0*
-  - doom-version: *3.0.0-dev*
-  - doom-modules-version: *22.08.0-dev*
+  - git commit: *986398504*
+  - doom-version: *3.0.0-pre*
+  - doom-modules-version: *v23.09.0-pre*
 *** 模组
 :properties:
 :header-args:emacs-lisp: :tangle no
@@ -318,7 +316,7 @@ workspaces          ; tab emulation, persistence & separate workspaces
 - 编辑器 :: *VI VI VI Editor of the Beast*
   #+name: doom-editor
   #+begin_src emacs-lisp
-;;(evil +everywhere); come to the dark side, we have cookies
+(evil +everywhere); come to the dark side, we have cookies
 file-templates      ; auto-snippets for empty files
 fold                ; (nigh) universal code folding
 (format +onsave)    ; automated prettiness
@@ -345,7 +343,7 @@ vc                  ; version-control and Emacs, sitting in a tree
 - 终端 :: 也许我应该卸载掉我的 ~Konsole~
   #+name: doom-term
   #+begin_src emacs-lisp
-;;eshell            ; the elisp shell that works everywhere
+eshell            ; the elisp shell that works everywhere
 ;;shell             ; simple shell REPL for Emacs
 ;;term              ; basic terminal emulator for Emacs
 vterm               ; the best terminal emulation in Emacs
@@ -406,17 +404,17 @@ tty                 ; improve the terminal Emacs experience
 ;;beancount         ; mind the GAAP
 (cc +lsp)           ; C > C++ == 1
 ;;clojure           ; java with a lisp
-;;common-lisp       ; if you've seen one lisp, you've seen them all
+common-lisp       ; if you've seen one lisp, you've seen them all
 ;;coq               ; proofs-as-programs
 ;;crystal           ; ruby at the speed of c
 ;;csharp            ; unity, .NET, and mono shenanigans
-data                ; config/data formats
+;;data                ; config/data formats
 ;;(dart +flutter)   ; paint ui and not much else
 ;;dhall
-(elixir +lsp)       ; erlang done right
+;;(elixir +lsp)       ; erlang done right
 ;;elm               ; care for a cup of TEA?
 emacs-lisp          ; drown in parentheses
-(erlang +lsp)       ; an elegant language for a more civilized age
+;;(erlang +lsp)       ; an elegant language for a more civilized age
 ;;ess               ; emacs speaks statistics
 ;;factor
 ;;faust             ; dsp, but you get to keep your soul
@@ -430,7 +428,7 @@ emacs-lisp          ; drown in parentheses
 ;;hy                ; readability of scheme w/ speed of python
 ;;idris             ; a language you can depend on
 json                ; At least it ain't XML
-;;(java +lsp)       ; the poster child for carpal tunnel syndrome
+(java +lsp)       ; the poster child for carpal tunnel syndrome
 ;;(javascript +lsp) ; all(hope(abandon(ye(who(enter(here))))))
 ;;julia             ; a better, faster MATLAB
 ;;kotlin            ; a better, slicker Java(Script)
@@ -440,7 +438,7 @@ json                ; At least it ain't XML
  +fold)             ; fold the clutter away nicities
 ;;lean              ; for folks with too much to prove
 ;;ledger            ; be audit you can be
-lua                 ; one-based indices? one-based indices
+;;lua                 ; one-based indices? one-based indices
 markdown            ; writing docs for people to ignore
 ;;nim               ; python + lisp at the speed of c
 ;;nix               ; I hereby declare "nix geht mehr!"
@@ -479,7 +477,7 @@ sh                  ; she sells {ba,z,fi}sh shells on the C xor
 ;;swift             ; who asked for emoji variables?
 ;;terra             ; Earth and Moon in alignment for performance.
 ;;web               ; the tubes
-yaml                ; JSON, but readable
+;;yaml                ; JSON, but readable
 ;;zig               ; C, but simpler
 #+end_src
 
@@ -554,7 +552,8 @@ Unicode 字体为什么不试试 'JuliaMono' 呢？
 相对行号可以很好的知道距离目标行有多远，然后用快捷键 =C-u num <UP>= 或
 =ESC num <UP>= 到达你想去的行。
 #+begin_src emacs-lisp
-(setq display-line-numbers-type 'relative)
+;;(setq display-line-numbers-type 'relative)
+(setq display-line-numbers-type t)
 #+end_src
 
 我想设置一下更好看的默认缓冲区名称
@@ -624,37 +623,6 @@ Unicode 字体为什么不试试 'JuliaMono' 呢？
                         (quiet! (apply orig-fn args))))
 #+end_src
 
-*** dashboard
-Dashboard 是打开 Emacs 的主页，在这里添加一些常用命令是很舒服的。
-#+begin_src emacs-lisp
-(map! :map +doom-dashboard-mode-map
-      :desc "org agenda" "a" #'org-agenda
-      :desc "find file" "f" #'find-file
-      :desc "recent session" "R" #'doom/quickload-session
-      :desc "recent files" "r" #'counsel-recentf
-      :desc "config dir" "C" #'doom/open-private-config
-      :desc "open config.org" "c" (cmd! (find-file (expand-file-name "config.org" doom-private-dir)))
-      ;; :desc "open dotfile" "." (cmd! (doom-project-find-file "~/.config/"))
-      :desc "notes (roam)" "n" #'org-roam-node-find
-      :desc "switch buffer" "b" #'+vertico/switch-workspace-buffer
-      ;; :desc "switch buffers (all)" "B" #'consult-buffer
-      :desc "ibuffer" "i" #'ibuffer
-      :desc "open project" "p" #'counsel-projectile-switch-project
-      ;; :desc "set theme" "t" #'consult-theme
-      :desc "quit" "q" #'save-buffers-kill-terminal
-      :desc "documentation" "H" #'doom/help
-      :desc "show keybindings" "h" (cmd! (which-key-show-major-mode)))
-#+end_src
-
-那现在 dashboard 所展示的命令并不是很有用了，移除掉它们
-#+name: doom-dashboard-layout
-#+begin_src emacs-lisp :tangle no
-(remove-hook '+doom-dashboard-functions
-             #'doom-dashboard-widget-shortmenu)
-(add-hook! '+doom-dashboard-mode-hook (hide-mode-line-mode 1)
-           (hl-line-mode 1))
-#+end_src
-
 ** 其他设置
 *** 窗口标题
 我更喜欢窗口展示缓冲区的名字，然后是项目文件夹 (如果可用)。
@@ -671,32 +639,6 @@ Dashboard 是打开 Emacs 的主页，在这里添加一些常用命令是很舒
 [[github:tecosaur][tecosaur]] 做了一个相当棒的启动画面，心动！但是太复杂了。我只是想简单的在每次重启时
 更换 banner，仅此而已。
 
-#+name: doom-image-banner
-#+begin_src emacs-lisp :tangle no
-(setq! fancy-splash-image
-       (let ((banners (directory-files (expand-file-name "banners" doom-private-dir)
-                                       'full (rx ".png" eos))))
-         (elt banners (random (length banners)))))
-#+end_src
-
-当然，不要忘记 ASCII banner
-#+name: doom-ascii-banner
-#+begin_src emacs-lisp :tangle no
-(setq! ginshio/+doom-dashbord-ascii-banner
-       (split-string (with-output-to-string
-                       (call-process "cat" nil standard-output nil
-                                     (let ((banners (directory-files (expand-file-name "banners" doom-private-dir)
-                                                                     'full (rx ".txt" eos))))
-                                       (elt banners (random (length banners))))))
-                     "\n" t))
-(setq! +doom-dashboard-ascii-banner-fn
-       #'(lambda ()
-           (mapc (lambda (line)
-                   (insert (propertize (+doom-dashboard--center +doom-dashboard--width line)
-                                       'face 'doom-dashboard-banner) " ")
-                   (insert "\n"))
-                 ginshio/+doom-dashbord-ascii-banner)))
-#+end_src
 
 *** 守护进程
 守护进程是个好东西，可惜我用的是 WSL，没有 =systemd= ，不过 [[https://www.emacswiki.org/emacs/EmacsAsDaemon][EmacsWiki]] 中还是列出了
@@ -1719,12 +1661,6 @@ Doom 有一个小问题，因为 ~doom/toggle-line-numbers~ 不运行 ~display-l
   (run-hooks 'display-line-numbers-mode-hook))
 #+end_src
 
-最后，我想我真的很喜欢这个，我会继续在文本模式下删除行号。
-
-#+begin_src emacs-lisp
-(remove-hook 'text-mode-hook #'display-line-numbers-mode)
-#+end_src
-
 ** Org Mode
 :properties:
 :CUSTOM_ID: org
@@ -1736,13 +1672,13 @@ Org Mode 无疑是 Emacs 的杀手级应用，其扩展能力以及 Emacs 的契
 
 #+attr_latex: :align *{8}{p{0.105\linewidth}} :font \small
 #+plot: transpose:yes type:radar min:0 max:4 file:"misc/document-format-comparison.svg"
-| 格式              | 细粒度控制 | 上手易用性 | 语法简单 | 编辑器支持 | 集成度 | 易于参考 | 多功能性 |
-|-------------------+------------+------------+----------+------------+--------+----------+----------|
-| Word              |          2 |          4 |        4 |          2 |      3 |        2 |        2 |
-| LaTeX             |          4 |          1 |        1 |          3 |      2 |        4 |        3 |
-| Org Mode          |          4 |          2 |      3.5 |          1 |      4 |        4 |        4 |
-| Markdown          |          1 |          3 |        3 |          4 |      3 |        3 |        1 |
-| Markdown + Pandoc |        2.5 |        2.5 |      2.5 |          3 |      3 |        3 |        2 |
+| 格式               | 细粒度控制 | 上手易用性 | 语法简单 | 编辑器支持 | 集成度 | 易于参考 | 多功能性 |
+|-------------------+-----------+-----------+---------+-----------+-------+---------+---------|
+| Word              |         2 |         4 |       4 |         2 |     3 |       2 |       2 |
+| LaTeX             |         4 |         1 |       1 |         3 |     2 |       4 |       3 |
+| Org Mode          |         4 |         2 |     3.5 |         1 |     4 |       4 |       4 |
+| Markdown          |         1 |         3 |       3 |         4 |     3 |       3 |       1 |
+| Markdown + Pandoc |       2.5 |       2.5 |     2.5 |         3 |     3 |       3 |       2 |
 
 除了标记语言 (Markup Language) 的优雅外，Emacs 集成了一场丰富的有趣的功能，比如说对
 当前任何技术都支持的文学编程。
@@ -2196,7 +2132,7 @@ https://www.zmonster.me/2018/02/28/org-mode-capture.html"
   (org-agenda-finalize . org-modern-agenda)
   :config
   (setq org-modern-star '("♇" "♆" "♅" "♄" "♃" "♂" "♀" "☿")
-        ;; (setq org-modern-star '("◉" "○" "✸" "✿" "✤" "✜" "◆" "▶")
+  ;;(setq org-modern-star '("◉" "○" "✸" "✿" "✤" "✜" "◆" "▶")
         org-modern-table-vertical 1
         org-modern-table-horizontal 0.2
         org-modern-list '((43 . "➤")
