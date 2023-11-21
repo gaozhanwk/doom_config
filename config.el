@@ -63,7 +63,8 @@
 ;; 主题和 modeline:3 ends here
 
 ;; [[file:config.org::*杂项][杂项:1]]
-(setq display-line-numbers-type 'relative)
+;;(setq display-line-numbers-type 'relative)
+(setq display-line-numbers-type t)
 ;; 杂项:1 ends here
 
 ;; [[file:config.org::*杂项][杂项:2]]
@@ -76,10 +77,7 @@
   (tab-bar-mode -1)                ;; disable tab-bar
   (setq-default cursor-type 'box)  ;; set box style cursor
   (blink-cursor-mode -1)           ;; cursor not blink
-  (remove-hook '+doom-dashboard-functions
-               #'doom-dashboard-widget-shortmenu)
-  (add-hook! '+doom-dashboard-mode-hook (hide-mode-line-mode 1)
-             (hl-line-mode 1))
+  
   (if (display-graphic-p)
       (progn
         ;; NOTE: ONLY GUI
@@ -90,50 +88,14 @@
         (appendq! face-font-rescale-alist
                   '(("Source Han Mono" . 1.2)
                     ))
-        (setq! fancy-splash-image
-               (let ((banners (directory-files (expand-file-name "banners" doom-private-dir)
-                                               'full (rx ".png" eos))))
-                 (elt banners (random (length banners)))))
+        
         ;; random banner image from bing.com, NOTE: https://emacs-china.org/t/topic/264/33
         )
     (progn
       ;; NOTE: ONLY TUI
-      (setq! ginshio/+doom-dashbord-ascii-banner
-             (split-string (with-output-to-string
-                             (call-process "cat" nil standard-output nil
-                                           (let ((banners (directory-files (expand-file-name "banners" doom-private-dir)
-                                                                           'full (rx ".txt" eos))))
-                                             (elt banners (random (length banners))))))
-                           "\n" t))
-      (setq! +doom-dashboard-ascii-banner-fn
-             #'(lambda ()
-                 (mapc (lambda (line)
-                         (insert (propertize (+doom-dashboard--center +doom-dashboard--width line)
-                                             'face 'doom-dashboard-banner) " ")
-                         (insert "\n"))
-                       ginshio/+doom-dashbord-ascii-banner)))
+      
       )))
 (add-hook! 'doom-init-ui-hook #'ginshio/doom-init-ui-misc)
-
-;; [[file:config.org::*dashboard][dashboard:1]]
-(map! :map +doom-dashboard-mode-map
-      :desc "org agenda" "a" #'org-agenda
-      :desc "find file" "f" #'find-file
-      :desc "recent session" "R" #'doom/quickload-session
-      :desc "recent files" "r" #'counsel-recentf
-      :desc "config dir" "C" #'doom/open-private-config
-      :desc "open config.org" "c" (cmd! (find-file (expand-file-name "config.org" doom-private-dir)))
-      ;; :desc "open dotfile" "." (cmd! (doom-project-find-file "~/.config/"))
-      :desc "notes (roam)" "n" #'org-roam-node-find
-      :desc "switch buffer" "b" #'+vertico/switch-workspace-buffer
-      ;; :desc "switch buffers (all)" "B" #'consult-buffer
-      :desc "ibuffer" "i" #'ibuffer
-      :desc "open project" "p" #'counsel-projectile-switch-project
-      ;; :desc "set theme" "t" #'consult-theme
-      :desc "quit" "q" #'save-buffers-kill-terminal
-      :desc "documentation" "H" #'doom/help
-      :desc "show keybindings" "h" (cmd! (which-key-show-major-mode)))
-;; dashboard:1 ends here
 
 ;; [[file:config.org::*窗口标题][窗口标题:1]]
 (setq! frame-title-format
@@ -143,6 +105,58 @@
            (unless (string= "-" project-name)
              (format "  -  [%s]" project-name))))))
 ;; 窗口标题:1 ends here
+
+;; [[file:config.org::*截图][截图:1]]
+(defun my-yank-image-from-win-clipboard-through-powershell()
+  "to simplify the logic, use c:/Users/Public as temporary directoy, and move it into current directoy"
+  (interactive)
+  (let* ((powershell "/mnt/c/Windows/System32/WindowsPowerShell/v1.0/powershell.exe")
+         (file-name (format-time-string "screenshot_%Y%m%d_%H%M%S.png"))
+         ;; (file-path-powershell (concat "c:/Users/\$env:USERNAME/" file-name))
+         (file-path-wsl (concat "./images/" file-name))
+         )
+    ;; (shell-command (concat powershell " -command \"(Get-Clipboard -Format Image).Save(\\\"C:/Users/\\$env:USERNAME/" file-name "\\\")\""))
+    (shell-command (concat powershell " -command \"(Get-Clipboard -Format Image).Save(\\\"C:/Users/Public/" file-name "\\\")\""))
+    (rename-file (concat "/mnt/c/Users/Public/" file-name) file-path-wsl)
+    (insert (concat "[[file:" file-path-wsl "]]"))
+    (message "insert DONE.")
+    ))
+
+(global-set-key (kbd "<f12>") 'my-yank-image-from-win-clipboard-through-powershell)
+;; 截图:1 ends here
+
+;; [[file:config.org::*浏览器][浏览器:1]]
+;; wsl调用window浏览器
+(defun my/browse-url-generic (url &optional _new-window)
+  ;; new-window ignored
+  "Ask the WWW browser defined by `browse-url-generic-program' to load URL.
+Default to the URL around or before point.  A fresh copy of the
+browser is started up in a new process with possible additional arguments
+`browse-url-generic-args'.  This is appropriate for browsers which
+don't offer a form of remote control."
+  (interactive (browse-url-interactive-arg "URL: "))
+  (if (not browse-url-generic-program)
+      (error "No browser defined (`browse-url-generic-program')"))
+  (apply 'call-process browse-url-generic-program nil
+	 0 nil
+	 (append browse-url-generic-args
+                 (list (format "start %s"
+                               (replace-regexp-in-string "&" "^&" url))))))
+
+(when (and (eq system-type 'gnu/linux)
+           (string-match
+            "Linux.*Microsoft.*Linux"
+            (shell-command-to-string "uname -a")))
+  (setq
+   browse-url-generic-program  "/mnt/c/Windows/System32/cmd.exe"
+   browse-url-generic-args     '("/c")
+   browse-url-browser-function #'my/browse-url-generic))
+;; 浏览器:1 ends here
+
+;; [[file:config.org::*Tramp][Tramp:1]]
+(setq tramp-auto-save-directory "~/tmp/tramp/")
+(setq tramp-chunksize 2000)
+;; Tramp:1 ends here
 
 ;; [[file:config.org::*Spell Check][Spell Check:1]]
 (set-company-backend!
@@ -421,34 +435,6 @@ see: https://www.emacswiki.org/emacs/DiredOmitMode"
      (face-attribute 'default :foreground))))
 ;; Theme Magic:3 ends here
 
-;; [[file:config.org::*Emojify][Emojify:1]]
-(setq emojify-emoji-set "twemoji-v2")
-;; Emojify:1 ends here
-
-;; [[file:config.org::*Emojify][Emojify:2]]
-(defvar emojify-disabled-emojis
-  '(;; Org
-    "◼" "☑" "☸" "⚙" "⏩" "⏪" ":end:" "↔"
-    ;; Org Heading
-    "✙" "♱" "♰" "☥" "✞" "✟" "✝" "†"
-    "☰" "☱" "☲" "☳" "☴" "☵" "☶" "☷"
-    "☿" "♀" "♁" "♂" "♃" "♄" "♅" "♆" "♇" "☽" "☾"
-    "♈" "♉" "♊" "♋" "♌" "♍" "♎" "♏" "♐" "♑" "♒" "♓"
-    "♔" "♕" "♖" "♗" "♘" "♙"
-    "♚" "♛" "♜" "♝" "♞" "♟"
-    ;; Org Agenda
-    "⚡" "↑" "↓" "☕" "❓"
-    ;; I just want to see this as text
-    "©" "™")
-  "Characters that should never be affected by `emojify-mode'.")
-
-(defadvice! emojify-delete-from-data ()
-  "Ensure `emojify-disabled-emojis' don't appear in `emojify-emojis'."
-  :after #'emojify-set-emoji-data
-  (dolist (emoji emojify-disabled-emojis)
-    (remhash emoji emojify-emojis)))
-;; Emojify:2 ends here
-
 ;; [[file:config.org::*Tabs][Tabs:1]]
 (after! centaur-tabs
   (setq! centaur-tabs-style "bar"
@@ -558,6 +544,10 @@ see: https://www.emacswiki.org/emacs/DiredOmitMode"
                            )))
 ;; hl todo:1 ends here
 
+;; [[file:config.org::*cnfonts 字体][cnfonts 字体:2]]
+(cnfonts-mode 1)
+;; cnfonts 字体:2 ends here
+
 ;; [[file:config.org::*xkcd][xkcd:2]]
 (after! xkcd
   (setq xkcd-cache-dir (expand-file-name "xkcd/" doom-cache-dir)
@@ -656,10 +646,6 @@ see: https://www.emacswiki.org/emacs/DiredOmitMode"
   (run-hooks 'display-line-numbers-mode-hook))
 ;; 无行号边距:3 ends here
 
-;; [[file:config.org::*无行号边距][无行号边距:4]]
-(remove-hook 'text-mode-hook #'display-line-numbers-mode)
-;; 无行号边距:4 ends here
-
 (after! org
   (setq! org-use-property-inheritance t         ; it's convenient to have properties inherited
        org-log-done 'time                     ; having the time a item is done sounds convenient
@@ -684,8 +670,8 @@ see: https://www.emacswiki.org/emacs/DiredOmitMode"
   (org-mode . org-modern-mode)
   (org-agenda-finalize . org-modern-agenda)
   :config
-  (setq org-modern-star '("♇" "♆" "♅" "♄" "♃" "♂" "♀" "☿")
-        ;; (setq org-modern-star '("◉" "○" "✸" "✿" "✤" "✜" "◆" "▶")
+  ;;(setq org-modern-star '("♇" "♆" "♅" "♄" "♃" "♂" "♀" "☿")
+  (setq org-modern-star '("◉" "○" "✸" "✿" "✤" "✜" "◆" "▶")
         org-modern-table-vertical 1
         org-modern-table-horizontal 0.2
         org-modern-list '((43 . "➤")
@@ -704,50 +690,14 @@ see: https://www.emacswiki.org/emacs/DiredOmitMode"
         org-modern-progress nil
         org-modern-priority nil
         org-modern-horizontal-rule (make-string 36 ?─)
-        org-modern-keyword '((t . t)
-                             ("title" . "𝙏")
-                             ("subtitle" . "𝙩")
-                             ("author" . "𝘼")
-                             ("email" . #("" 0 1 (display (raise -0.14))))
-                             ("date" . "𝘿")
-                             ("property" . "☸")
-                             ("options" . "⌥")
-                             ("startup" . "⏻")
-                             ("macro" . "𝓜")
-                             ("bind" . #("" 0 1 (display (raise -0.1))))
-                             ("bibliography" . "")
-                             ("print_bibliography" . #("" 0 1 (display (raise -0.1))))
-                             ("cite_export" . "⮭")
-                             ("print_glossary" . #("ᴬᶻ" 0 1 (display (raise -0.1))))
-                             ("glossary_sources" . #("" 0 1 (display (raise -0.14))))
-                             ("include" . "⇤")
-                             ("setupfile" . "⇚")
-                             ("html_head" . "🅷")
-                             ("html" . "🅗")
-                             ("latex_class" . "🄻")
-                             ("latex_class_options" . #("🄻" 1 2 (display (raise -0.14))))
-                             ("latex_header" . "🅻")
-                             ("latex_header_extra" . "🅻⁺")
-                             ("latex" . "🅛")
-                             ("beamer_theme" . "🄱")
-                             ("beamer_color_theme" . #("🄱" 1 2 (display (raise -0.12))))
-                             ("beamer_font_theme" . "🄱𝐀")
-                             ("beamer_header" . "🅱")
-                             ("beamer" . "🅑")
-                             ("attr_latex" . "🄛")
-                             ("attr_html" . "🄗")
-                             ("attr_org" . "⒪")
-                             ("name" . "⁍")
-                             ("header" . "›")
-                             ("caption" . "☰")
-                             ("RESULTS" . "🠶"))
+
         org-auto-align-tags nil
         org-tags-column 0
         org-catch-invisible-edits 'show-and-error
         org-special-ctrl-a/e t
         org-hide-emphasis-markers t
 
-        org-agenda-tags-column 0
+        org-agenda-tags-column  0
         org-agenda-block-separator ?─
         org-agenda-time-grid '((daily today require-timed)
                                (800 1000 1200 1400 1600 1800 2000)
@@ -1063,50 +1013,14 @@ https://www.zmonster.me/2018/02/28/org-mode-capture.html"
         org-modern-progress nil
         org-modern-priority nil
         org-modern-horizontal-rule (make-string 36 ?─)
-        org-modern-keyword '((t . t)
-                             ("title" . "𝙏")
-                             ("subtitle" . "𝙩")
-                             ("author" . "𝘼")
-                             ("email" . #("" 0 1 (display (raise -0.14))))
-                             ("date" . "𝘿")
-                             ("property" . "☸")
-                             ("options" . "⌥")
-                             ("startup" . "⏻")
-                             ("macro" . "𝓜")
-                             ("bind" . #("" 0 1 (display (raise -0.1))))
-                             ("bibliography" . "")
-                             ("print_bibliography" . #("" 0 1 (display (raise -0.1))))
-                             ("cite_export" . "⮭")
-                             ("print_glossary" . #("ᴬᶻ" 0 1 (display (raise -0.1))))
-                             ("glossary_sources" . #("" 0 1 (display (raise -0.14))))
-                             ("include" . "⇤")
-                             ("setupfile" . "⇚")
-                             ("html_head" . "🅷")
-                             ("html" . "🅗")
-                             ("latex_class" . "🄻")
-                             ("latex_class_options" . #("🄻" 1 2 (display (raise -0.14))))
-                             ("latex_header" . "🅻")
-                             ("latex_header_extra" . "🅻⁺")
-                             ("latex" . "🅛")
-                             ("beamer_theme" . "🄱")
-                             ("beamer_color_theme" . #("🄱" 1 2 (display (raise -0.12))))
-                             ("beamer_font_theme" . "🄱𝐀")
-                             ("beamer_header" . "🅱")
-                             ("beamer" . "🅑")
-                             ("attr_latex" . "🄛")
-                             ("attr_html" . "🄗")
-                             ("attr_org" . "⒪")
-                             ("name" . "⁍")
-                             ("header" . "›")
-                             ("caption" . "☰")
-                             ("RESULTS" . "🠶"))
+
         org-auto-align-tags nil
         org-tags-column 0
         org-catch-invisible-edits 'show-and-error
         org-special-ctrl-a/e t
         org-hide-emphasis-markers t
 
-        org-agenda-tags-column 0
+        org-agenda-tags-column  0
         org-agenda-block-separator ?─
         org-agenda-time-grid '((daily today require-timed)
                                (800 1000 1200 1400 1600 1800 2000)

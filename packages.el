@@ -25,6 +25,11 @@
 (package! calibredb)
 ;; Ebooks:1 ends here
 
+;; [[file:config.org::*rime][rime:1]]
+(package! rime)
+(package! posframe)
+;; rime:1 ends here
+
 ;; [[file:config.org::*Nyan][Nyan:1]]
 (package! nyan-mode :recipe (:host github :repo "TeMPOraL/nyan-mode"))
 ;; Nyan:1 ends here
@@ -32,6 +37,10 @@
 ;; [[file:config.org::*Theme Magic][Theme Magic:1]]
 (package! theme-magic)
 ;; Theme Magic:1 ends here
+
+;; [[file:config.org::*cnfonts 字体][cnfonts 字体:1]]
+(package! cnfonts)
+;; cnfonts 字体:1 ends here
 
 ;; [[file:config.org::*xkcd][xkcd:1]]
 (package! xkcd)
@@ -48,3 +57,7 @@
   :recipe (:host github :repo "awth13/org-appear"))
 
 (package! org-fragtog)
+
+;; [[file:config.org::*dts mode][dts mode:1]]
+(package! dts-mode)
+;; dts mode:1 ends here

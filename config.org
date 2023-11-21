@@ -111,7 +111,7 @@ source /etc/os-release
 ** 设置默认值
 尝试一下别人的默认值，比如 [[https://github.com/angrybacon/dotemacs/blob/master/dotemacs.org#use-better-defaults][angrybacon/dotemacs]]
 #+begin_src emacs-lisp
-(add-hook! 'window-setup-hook #'toggle-frame-fullscreen)
+;;(add-hook! 'window-setup-hook #'toggle-frame-fullscreen)
 (display-time-mode t)   ;开启时间状态栏
 
 (define-key! global-map "C-s" #'+default/search-buffer)
@@ -156,7 +156,7 @@ source /etc/os-release
 #+end_src
 
 如果是 evil 用户可以改为下面这种
-#+begin_src emacs-lisp :tangle no
+#+begin_src emacs-lisp
 (map! :map evil-window-map
       "SPC" #'rotate-layout
       ;; 方向
@@ -288,8 +288,7 @@ literate
 doom                ; what makes DOOM look the way it does
 doom-dashboard      ; a nifty splash screen for Emacs
 doom-quit           ; DOOM quit-message prompts when you quit Emacs
-(emoji
- +unicode +github)  ; 🙂
+(emoji +unicode)    ; 🙂
 hl-todo             ; highlight TODO/FIXME/NOTE/DEPRECATED/HACK/REVIEW
 ;;hydra
 ;;indent-guides     ; highlighted indent columns
@@ -352,9 +351,9 @@ vterm               ; the best terminal emulation in Emacs
 - 检测 :: 可以告诉我哪里不对，但我觉得我应该先好好背背单词或者看看 PEP8
   #+name: doom-checkers
   #+begin_src emacs-lisp
-syntax              ; tasing you for every semicolon you forget
-(:if (or (executable-find "hunspell")
-         (executable-find "aspell")) spell) ; tasing you for misspelling mispelling
+;;syntax              ; tasing you for every semicolon you forget
+;;(:if (or (executable-find "hunspell")
+;;         (executable-find "aspell")) spell) ; tasing you for misspelling mispelling
 ;;grammar           ; tasing grammar mistake every you make
   #+end_src
 
@@ -639,12 +638,63 @@ Unicode 字体为什么不试试 'JuliaMono' 呢？
 [[github:tecosaur][tecosaur]] 做了一个相当棒的启动画面，心动！但是太复杂了。我只是想简单的在每次重启时
 更换 banner，仅此而已。
 
-
 *** 守护进程
 守护进程是个好东西，可惜我用的是 WSL，没有 =systemd= ，不过 [[https://www.emacswiki.org/emacs/EmacsAsDaemon][EmacsWiki]] 中还是列出了
 各种 Daemon 的方法
+*** WSL
+**** 截图
+#+begin_src emacs-lisp
+(defun my-yank-image-from-win-clipboard-through-powershell()
+  "to simplify the logic, use c:/Users/Public as temporary directoy, and move it into current directoy"
+  (interactive)
+  (let* ((powershell "/mnt/c/Windows/System32/WindowsPowerShell/v1.0/powershell.exe")
+         (file-name (format-time-string "screenshot_%Y%m%d_%H%M%S.png"))
+         ;; (file-path-powershell (concat "c:/Users/\$env:USERNAME/" file-name))
+         (file-path-wsl (concat "./images/" file-name))
+         )
+    ;; (shell-command (concat powershell " -command \"(Get-Clipboard -Format Image).Save(\\\"C:/Users/\\$env:USERNAME/" file-name "\\\")\""))
+    (shell-command (concat powershell " -command \"(Get-Clipboard -Format Image).Save(\\\"C:/Users/Public/" file-name "\\\")\""))
+    (rename-file (concat "/mnt/c/Users/Public/" file-name) file-path-wsl)
+    (insert (concat "[[file:" file-path-wsl "]]"))
+    (message "insert DONE.")
+    ))
 
+(global-set-key (kbd "<f12>") 'my-yank-image-from-win-clipboard-through-powershell)
+#+end_src
+**** 浏览器
+#+begin_src emacs-lisp
+;; wsl调用window浏览器
+(defun my/browse-url-generic (url &optional _new-window)
+  ;; new-window ignored
+  "Ask the WWW browser defined by `browse-url-generic-program' to load URL.
+Default to the URL around or before point.  A fresh copy of the
+browser is started up in a new process with possible additional arguments
+`browse-url-generic-args'.  This is appropriate for browsers which
+don't offer a form of remote control."
+  (interactive (browse-url-interactive-arg "URL: "))
+  (if (not browse-url-generic-program)
+      (error "No browser defined (`browse-url-generic-program')"))
+  (apply 'call-process browse-url-generic-program nil
+	 0 nil
+	 (append browse-url-generic-args
+                 (list (format "start %s"
+                               (replace-regexp-in-string "&" "^&" url))))))
 
+(when (and (eq system-type 'gnu/linux)
+           (string-match
+            "Linux.*Microsoft.*Linux"
+            (shell-command-to-string "uname -a")))
+  (setq
+   browse-url-generic-program  "/mnt/c/Windows/System32/cmd.exe"
+   browse-url-generic-args     '("/c")
+   browse-url-browser-function #'my/browse-url-generic))
+
+#+end_src
+**** Tramp
+#+begin_src emacs-lisp
+(setq tramp-auto-save-directory "~/tmp/tramp/")
+(setq tramp-chunksize 2000)
+#+end_src
 * 包
 ** 加载结构
 :properties:
@@ -1267,6 +1317,30 @@ cite 时 calibre 只能做 book。
 
   (add-hook 'nov-mode-hook #'+nov-mode-setup))
 #+end_src
+*** rime
+#+begin_src emacs-lisp :tangle packages.el
+(package! rime)
+(package! posframe)
+#+end_src
+
+#+begin_src emacs-lisp
+(use-package! rime
+  :config
+  (setq rime-user-data-dir "~/.config/fcitx/rime")
+  (setq rime-posframe-properties
+      (list :background-color "#333333"
+            :foreground-color "#dcdccc"
+            :font "SimSun"
+            :internal-border-width 10))
+  (setq default-input-method "rime"
+      rime-show-candidate 'posframe)
+  (setq rime-translate-keybindings
+        '("C-f" "C-b" "C-n" "C-p" "C-g" "<left>" "<right>" "<up>" "<down>" "<prior>" "<next>" "<delete>"))
+  :bind
+  (:map rime-mode-map
+        ("C-`" . 'rime-send-keybinding))
+  )
+#+end_src
 
 ** UI
 *** Nyan
@@ -1529,6 +1603,14 @@ OOTB 的 emoji 模块！麻烦的一点是设置的有些默认字符，可能�
                            ("KLUDGE" font-lock-preprocessor-face bold )
                            ("BUG" error bold) ;; a known bug that should be corrected.
                            )))
+#+end_src
+*** cnfonts 字体
+#+begin_src emacs-lisp :tangle packages.el
+(package! cnfonts)
+#+end_src
+
+#+begin_src emacs-lisp :tangle config.el
+(cnfonts-mode 1)
 #+end_src
 
 ** 有趣的生活
@@ -2131,8 +2213,8 @@ https://www.zmonster.me/2018/02/28/org-mode-capture.html"
   (org-mode . org-modern-mode)
   (org-agenda-finalize . org-modern-agenda)
   :config
-  (setq org-modern-star '("♇" "♆" "♅" "♄" "♃" "♂" "♀" "☿")
-  ;;(setq org-modern-star '("◉" "○" "✸" "✿" "✤" "✜" "◆" "▶")
+  ;;(setq org-modern-star '("♇" "♆" "♅" "♄" "♃" "♂" "♀" "☿")
+  (setq org-modern-star '("◉" "○" "✸" "✿" "✤" "✜" "◆" "▶")
         org-modern-table-vertical 1
         org-modern-table-horizontal 0.2
         org-modern-list '((43 . "➤")
@@ -2151,50 +2233,14 @@ https://www.zmonster.me/2018/02/28/org-mode-capture.html"
         org-modern-progress nil
         org-modern-priority nil
         org-modern-horizontal-rule (make-string 36 ?─)
-        org-modern-keyword '((t . t)
-                             ("title" . "𝙏")
-                             ("subtitle" . "𝙩")
-                             ("author" . "𝘼")
-                             ("email" . #("" 0 1 (display (raise -0.14))))
-                             ("date" . "𝘿")
-                             ("property" . "☸")
-                             ("options" . "⌥")
-                             ("startup" . "⏻")
-                             ("macro" . "𝓜")
-                             ("bind" . #("" 0 1 (display (raise -0.1))))
-                             ("bibliography" . "")
-                             ("print_bibliography" . #("" 0 1 (display (raise -0.1))))
-                             ("cite_export" . "⮭")
-                             ("print_glossary" . #("ᴬᶻ" 0 1 (display (raise -0.1))))
-                             ("glossary_sources" . #("" 0 1 (display (raise -0.14))))
-                             ("include" . "⇤")
-                             ("setupfile" . "⇚")
-                             ("html_head" . "🅷")
-                             ("html" . "🅗")
-                             ("latex_class" . "🄻")
-                             ("latex_class_options" . #("🄻" 1 2 (display (raise -0.14))))
-                             ("latex_header" . "🅻")
-                             ("latex_header_extra" . "🅻⁺")
-                             ("latex" . "🅛")
-                             ("beamer_theme" . "🄱")
-                             ("beamer_color_theme" . #("🄱" 1 2 (display (raise -0.12))))
-                             ("beamer_font_theme" . "🄱𝐀")
-                             ("beamer_header" . "🅱")
-                             ("beamer" . "🅑")
-                             ("attr_latex" . "🄛")
-                             ("attr_html" . "🄗")
-                             ("attr_org" . "⒪")
-                             ("name" . "⁍")
-                             ("header" . "›")
-                             ("caption" . "☰")
-                             ("RESULTS" . "🠶"))
+
         org-auto-align-tags nil
         org-tags-column 0
         org-catch-invisible-edits 'show-and-error
         org-special-ctrl-a/e t
         org-hide-emphasis-markers t
 
-        org-agenda-tags-column 0
+        org-agenda-tags-column  0
         org-agenda-block-separator ?─
         org-agenda-time-grid '((daily today require-timed)
                                (800 1000 1200 1400 1600 1800 2000)
@@ -4561,6 +4607,10 @@ tcc 也是 C++
   )
 #+end_src
 
+** dts mode
+#+begin_src emacs-lisp :tangle packages.el
+(package! dts-mode)
+#+end_src
 
 * 生成 Org 文件
 - agenda
