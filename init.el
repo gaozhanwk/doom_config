@@ -39,7 +39,7 @@
        hl-todo             ; highlight TODO/FIXME/NOTE/DEPRECATED/HACK/REVIEW
        ;;hydra
        ;;indent-guides     ; highlighted indent columns
-       (ligatures +extra)  ; ligatures and symbols to make your code pretty again
+       ;;(ligatures +extra)  ; ligatures and symbols to make your code pretty again
        ;;minimap           ; show a map of the code on the side
        modeline            ; snazzy, Atom-inspired modeline, plus API
        nav-flash           ; blink cursor line after big motions
@@ -93,7 +93,7 @@
 
        :tools
        ansible
-       biblio              ; Writes a PhD for you (citation needed)
+       ;;biblio              ; Writes a PhD for you (citation needed)
        (debugger +lsp)     ; FIXME stepping through code, to help you add bugs
        ;;direnv
        ;;docker
@@ -155,10 +155,10 @@
        ;;(javascript +lsp) ; all(hope(abandon(ye(who(enter(here))))))
        ;;julia             ; a better, faster MATLAB
        ;;kotlin            ; a better, slicker Java(Script)
-       (latex              ; writing papers in Emacs has never been so fun
-        +latexmk           ; what else would you use?
-        +cdlatex           ; quick maths symbols
-        +fold)             ; fold the clutter away nicities
+       ;(latex              ; writing papers in Emacs has never been so fun
+       ; +latexmk           ; what else would you use?
+       ; +cdlatex           ; quick maths symbols
+       ; +fold)             ; fold the clutter away nicities
        ;;lean              ; for folks with too much to prove
        ;;ledger            ; be audit you can be
        ;;lua                 ; one-based indices? one-based indices
@@ -176,15 +176,12 @@
         +gnuplot           ; who doesn't like pretty pictures
         ;;+pomodoro        ; be fruitful with the tomato technique
         +present           ; using org-mode for presentations
-        ;; +roam2          ; wander around notes
+        +roam2          ; wander around notes
         )
        ;;php               ; perl's insecure younger brother
        ;;plantuml          ; diagrams for confusing people more
        ;;purescript        ; javascript, but functional
-       (python             ; beautiful is better than ugly
-        +pyenv
-        +lsp
-        +pyright)
+       python              ; beautiful is better than ugly
        ;;qt                ; the 'cutest' gui framework ever
        ;;racket            ; a DSL for DSLs
        ;;raku              ; the artist formerly known as perl6
